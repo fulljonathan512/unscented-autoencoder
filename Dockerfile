@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM pytorch/pytorch:2.4.0-cuda12.1-cudnn9-runtime
 
 # Avoid interactive prompts during package installs
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -8,9 +8,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies (git, wget, etc.)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
     git \
     wget \
     && rm -rf /var/lib/apt/lists/*
@@ -18,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy dependency definitions
 COPY requirements.txt /app/requirements.txt
 
-# Install Python dependencies
+# Install remaining Python dependencies (torch/torchvision already provided by base image)
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r /app/requirements.txt
 

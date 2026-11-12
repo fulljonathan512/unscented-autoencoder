@@ -2,9 +2,7 @@ pytorch-lightning==1.9.5
 PyYAML
 scikit-learn
 tensorboard
-torch
 torchsummary
-torchvision
 
 black
 pre-commit
