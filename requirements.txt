@@ -1,6 +1,6 @@
-pytorch-lightning
+pytorch-lightning==1.9.5
 PyYAML
-sklearn
+scikit-learn
 tensorboard
 torch
 torchsummary
