@@ -35,7 +35,7 @@ from pytorch_lightning import Trainer
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.utilities.seed import seed_everything
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-from pytorch_lightning.plugins import DDPPlugin
+from pytorch_lightning.strategies import DDPStrategy
 
 from models import *
 from experiment import VAEXperiment
@@ -112,7 +112,7 @@ class Runner:
                     save_last=False,
                 ),
             ],
-            strategy=DDPPlugin(find_unused_parameters=False),
+            strategy=DDPStrategy(find_unused_parameters=False),
             enable_progress_bar=False,
             **self.config["trainer_params"],
         )
