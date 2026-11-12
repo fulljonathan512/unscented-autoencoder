@@ -57,10 +57,26 @@ class Runner:
 
     def setup_data(self):
         dataset = self.config["model_params"]["dataset"]
+        # Determine whether to use pinned memory based on trainer settings.
+        # Support both the old `gpus` API and the newer `accelerator`/`devices` API.
+        trainer_params = self.config.get("trainer_params", {})
+
+        if "gpus" in trainer_params:
+            use_gpu = len(trainer_params["gpus"]) != 0
+        else:
+            accelerator = str(trainer_params.get("accelerator", "cpu"))
+            devices = trainer_params.get("devices", None)
+            if isinstance(devices, int):
+                use_gpu = accelerator == "gpu" and devices > 0
+            elif isinstance(devices, (list, tuple)):
+                use_gpu = accelerator == "gpu" and len(devices) > 0
+            else:
+                use_gpu = accelerator == "gpu"
+
         self.data = VAEDataset(
             dataset,
             **config["data_params"],
-            pin_memory=len(self.config["trainer_params"]["gpus"]) != 0,
+            pin_memory=use_gpu,
         )
         self.data.setup()
 
