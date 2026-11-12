@@ -118,7 +118,7 @@ class VAEDataset(LightningDataModule):
                 download=True,
             )
         #       =========================  Fashion MNIST Dataset  =========================
-        if self.dataset == "fashion_mnist":
+        elif self.dataset == "fashion_mnist":
             fashion_mnist_train_data = datasets.FashionMNIST(
                 root="./datasets/fashion_mnist_data/",
                 train=True,
